@@ -1,0 +1,20 @@
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+
+<div class="portlet tags-block-portlet">
+    <div class="short-info-block">
+        <div class="short-info-title">
+        	Программа&nbsp;развивает:
+        </div>
+        <ul>
+	        {% for tag in tags_list %}
+			    <li>{{ tag }}</li>
+			{% endfor %}
+        </ul>
+        {% if False %}
+	    	{% for file in files %}
+	    		<a href="{{ file.get_absolute_url }}" class="download-program-desc-link">Скачать описание программы ({{ file.file.size|bytes_to_kilobytes }}, PDF)</a>
+	    	{% endfor %}
+    	{% endif %}
+    </div>
+</div>

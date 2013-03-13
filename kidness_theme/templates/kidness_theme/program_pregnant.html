@@ -1,0 +1,207 @@
+{% extends "kidness_theme/program_base.html" %}
+{% load portlets_tags %}
+{% load i18n %}
+{% load lfc_tags %}
+{% load tagging_tags %}
+{% load lfc_theme_tags %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if(!navigator.userAgent.match(/iPhone/i) && !navigator.userAgent.match(/iPad/i)) {
+				$("#begunok-wrapper-pregnant").mouseenter(function(e){
+					$("#begunok1").children().show();
+				});
+				$("#begunok1").mouseenter(function(e){
+					$(this).children().animate({ marginLeft: 0 }, 200);		
+				});
+				
+				$("#begunok2").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 218 }, 200);		
+				});
+				$("#begunok3").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 436 }, 200);		
+				});
+				$("#begunok-wrapper-pregnant").mouseleave(function(e){
+					$(".begunok").children().hide();
+				});
+			}
+			$(".begunok").click(function(e){
+				window.location.href = $(this).find("a").attr("href");
+			});
+	});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if(!navigator.userAgent.match(/iPhone/i) && !navigator.userAgent.match(/iPad/i)) {
+				$("#pregnant-left-column-first").mouseenter(function(){
+					$(this).css("cursor", "pointer");
+				});
+				$("#pregnant-left-column-second").mouseenter(function(){
+					$(this).css("cursor", "pointer");
+				});
+			}
+			$("#pregnant-left-column-first").click(function(){
+				window.location.href = $(this).find("a").attr("href");
+			});
+			$("#pregnant-left-column-second").click(function(){
+				window.location.href = $(this).find("a").attr("href");
+			});
+		});
+	</script>
+{% endblock %}
+{% block ga_trackevent %}
+ 	_gaq.push(['_trackEvent', 'открытие формы', 'открытие формы узнать о наличии мест беременные']);
+{% endblock %}
+ {% block tabs-block %}
+	<div id="tabs" class="pregnant-programs">
+		{% tabs %}
+		{% portlet_slot 'Top' lfc_context %}
+	</div>
+{% endblock %}
+{% block content %}
+	<div id="first-level">
+		<div class="left-column">
+	    	<div class="left-column-wrapper">
+	    		<div class="pregnant-left-column-numbered-wrapper">
+			    	<div id="pregnant-left-column-first" class="pregnant-left-column-numbered">
+			    		<div class="arrow-block"><a href="{{lfc_context.parent.parent.get_absolute_url}}">Выберите<br/>триместр</a></div>
+			        </div>
+	        	</div>
+	        </div>
+    	</div>
+    	<div class="main">
+	    	<div class="main-wrapper">
+	    		<div id="begunok-wrapper-pregnant" class="{% block select-term-class %} {% endblock %}">
+					{% for child in lfc_context.parent.parent.get_children %}
+						{% ifequal forloop.counter 1 %}
+							<div class="begunok" id="begunok1" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:0;top:0;padding:0px;border:0px none;"><div style="display:none;opacity:1; z-index:2000;width:218px;height:111px;background:url('/media/kidness_theme/img/begunok_pregnant.png') no-repeat center top;"><a href="{{child.get_absolute_url}}"></a></div></div>
+						{% endifequal %}
+						{% ifequal forloop.counter 2 %}
+							<div class="begunok" id="begunok2" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:218px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+						{% endifequal %}
+						{% ifequal forloop.counter 3 %}
+							<div class="begunok" id="begunok3" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:436px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+						{% endifequal %}
+					{% endfor %}
+	        	</div>
+	        </div>
+	    </div>
+	</div>
+	<div id="second-level">
+		<div class="left-column">
+	    	<div class="left-column-wrapper">
+	        	<div class="pregnant-left-column-numbered-wrapper">
+			       	<div id="pregnant-left-column-second" class="pregnant-left-column-numbered">
+			    		<div class="arrow-block"><a href="{{lfc_context.parent.get_absolute_url}}">Выберите<br/>программу</a></div>
+			        </div>
+	        	</div>
+	        </div>
+	    </div>
+	    <div class="main">
+	    	<div id="main-second">
+			    <div class="program-sibling-wrapper">
+				    <div class="program-sibling program-sibling-left">
+					    <a class="program-sibling-title" href="{{ lfc_context.sibling_left.get_absolute_url }}">{{ lfc_context.sibling_left.title|safe }}</a> 
+				         {{ lfc_context.sibling_left.preview|safe }}<a href="{{lfc_context.sibling_left.get_absolute_url}}" class="read-whole-test">&#8594;</a>
+			        </div>
+			    </div>
+			    <div class="program-sibling-wrapper">
+				    <div class="program-sibling program-sibling-right">
+					    	<a class="program-sibling-title" href="{{ lfc_context.sibling_right.get_absolute_url }}">{{ lfc_context.sibling_right.title|safe }}</a> 
+				            {{ lfc_context.sibling_right.preview|safe }}<a href="{{ lfc_context.sibling_right.get_absolute_url }}" class="read-whole-test">&#8594;</a>
+				    </div>
+			    </div>
+	        </div>
+	    </div>
+	</div>
+	<div id="third-level">
+		<div class="left-column">
+	    	<div class="left-column-wrapper">
+	        	<div class="pregnant-left-column-numbered-wrapper">
+		        	<div id="pregnant-left-column-third" class="pregnant-left-column-numbered">
+		    			<div class="arrow-block">Ознакомьтесь<br/>с программой</div>
+		        	</div>
+	        	</div>
+	        	{% portlet_slot 'Left' lfc_context %}
+	        </div>
+	    </div>
+	    <div class="main">
+	    	<div class="main-wrapper">
+	        	<div id="main-third">
+	        		<h2 id="main-second-title">{{ lfc_context.title }}</h2>
+	        		{% if images or lfc_context.videos.all %}
+	        		<div id="gallery">
+		        		<div class="tn3 album">
+		        			<ul>
+		        				{% for video in lfc_context.videos.all %}
+		        					<li> 
+			        					<h4>video</h4>
+			        					<div class="tn3 content">
+								            <video width="620" height="343" type="video/youtube" src="{{video.location}}"></video>
+								        </div>
+								        <a href="{{ photo.image.url }}">
+								           <img src="{{ video.get_image.image.url_60x60  }}" alt="aaa" />
+								        </a>
+			        				</li>
+		        				{% endfor %}
+		        				{% for photo in images %}
+		        					<li> 
+		        						<h4>{{photo.title }}</h4>
+									    <div class="tn3 description"></div>
+		        						<a href="{{ photo.image.url }}">
+			        						<img 
+								    		     class="trainer-photo"
+									             src="{{ photo.image.url_60x60  }}"
+									             alt="{{ photo.title }}"
+									             title="{{ photo.title}}" 
+									         />
+								         </a>
+		        					</li>
+		        				{% endfor %}
+		        			</ul>
+		        		</div>
+	        		</div>
+	        		{% endif %}
+	        		<div id="programm-description">
+	        			<h3>Описание программы:</h3>
+	        			{{ lfc_context.description|safe }}
+	        		</div>
+	        		<div id="trainers-block">
+		        		{% for trainer in lfc_context.trainers.all %}
+				    		<div class="trainer-block">
+					    		 <img 
+					    		     class="trainer-photo"
+						             src="{{ trainer.get_image.image.url }}"
+						             alt="{{ trainer.get_image.image.title }}"
+						             title="{{ trainer.get_image.title }}" 
+						         />
+						         <h3>ТРЕНЕР: {{ trainer.title }}</h3>
+						         {{ trainer.description|safe }}
+				            </div>
+			        	{% endfor %}
+		        	</div>
+		        	<div id="client-opinions" style="display:none">
+		        		<h3> Ваши отзывы </h3>
+		        		{% for opinion in lfc_context.opinions.all %}
+			        		<div class="client-opinion-wrapper">
+				        		<div class="client-opinion">
+				        			<img 
+								    	class="client-photo"
+									    src="{{ opinion.client.path_to_photo }}"
+									    alt="{{ opinion.client.first_name }}&nbsp;{{ client.last_name }}"
+									    title="{{ opinion.client.first_name }}&nbsp;{{ client.last_name }}" 
+									/>
+				        			<span class="client-name">{{ opinion.client.first_name }}</span><br/>
+				        			{{ opinion.text }}
+				        		</div>
+				        	</div>
+		        		{% endfor %}
+		        		<div class="clear"></div>
+		        		<a href="/vklogin" class="create-opinion-link">оставить отзыв</a>
+	        		</div>
+	        	</div>
+	        </div>
+	    </div>
+	</div>
+{% endblock %}

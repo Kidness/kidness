@@ -1,0 +1,139 @@
+{% extends "lfc/base.html" %}
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+
+{% block section %}plain{% endblock %}
+
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if(!navigator.userAgent.match(/iPhone/i) && !navigator.userAgent.match(/iPad/i)) {
+				$("#begunok-wrapper-pregnant").mouseenter(function(e){
+					$("#begunok1").children().show();
+				});
+				$("#begunok1").mouseenter(function(e){
+					$(this).children().animate({ marginLeft: 0 }, 200);		
+				});
+				
+				$("#begunok2").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 218 }, 200);		
+				});
+				$("#begunok3").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 436 }, 200);		
+				});
+				$("#begunok-wrapper-pregnant").mouseleave(function(e){
+					$(".begunok").children().hide();
+				});
+			}
+			$(".begunok").click(function(e){
+				window.location.href = $(this).find("a").attr("href");
+			});
+	});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if(!navigator.userAgent.match(/iPhone/i) && !navigator.userAgent.match(/iPad/i)) {
+				$("#pregnant-left-column-first").mouseenter(function(){
+					$(this).css("cursor", "pointer");
+				});
+				$(".programcatalog-entries").mouseenter(function(){
+					$(this).css("cursor", "pointer");
+					$(this).find(".programcatalog-entries-header").css("text-decoration", "underline");
+				});
+				$(".programcatalog-entries").mouseleave(function(){
+					$(this).css("cursor", "");
+					$(this).find(".programcatalog-entries-header").css("text-decoration", "none");
+				});
+			}
+			$("#pregnant-left-column-first").click(function(){
+				window.location.href = $(this).find("a").attr("href");
+			});
+			$(".programcatalog-entries").click(function(){
+				window.location.href = $(this).find("a").attr("href");
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block tabs-block %}
+	<div id="tabs" class="pregnant-programs">
+		{% tabs %}
+		{% portlet_slot 'Top' lfc_context %}
+	</div>
+{% endblock %}
+
+{% block content %}
+	<div id="first-level">
+		<div class="left-column">
+	    	<div class="left-column-wrapper">
+	    		<div class="pregnant-left-column-numbered-wrapper">
+			    	<div id="pregnant-left-column-first" class="pregnant-left-column-numbered">
+			    		<div class="arrow-block"><a href="{{lfc_context.parent.get_absolute_url}}">Выберите<br/>триместр</a></div>
+			        </div>
+	        	</div>
+	        </div>
+    	</div>
+    	<div class="main" class="pregnant-main">
+	    	<div class="main-wrapper">
+	    		<div id="begunok-wrapper-pregnant" class="{% block select-term-class %} {% endblock %}">
+				{% for child in lfc_context.parent.get_children %}
+					{% ifequal forloop.counter 1 %}
+						<div class="begunok" id="begunok1" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:0;top:0;padding:0px;border:0px none;"><div style="display:none;opacity:1; z-index:2000;width:218px;height:111px;background:url('/media/kidness_theme/img/begunok_pregnant.png') no-repeat center top;"><a href="{{child.get_absolute_url}}"></a></div></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 2 %}
+						<div class="begunok" id="begunok2" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:218px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 3 %}
+						<div class="begunok" id="begunok3" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:436px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+				{% endfor %}
+				</div>
+	        </div>
+	    </div>
+	</div>
+	<div id="second-level">
+		<div class="left-column">
+	    	<div class="left-column-wrapper">
+	        	<div class="pregnant-left-column-numbered-wrapper">
+		        	<div id="pregnant-left-column-second" class="pregnant-left-column-numbered">
+		    			<div class="arrow-block">Ознакомтесь<br/>с программами</div>
+		        	</div>
+	        	</div>
+	        	<div class="programs-catalog-description">
+	        		<h2>{{ lfc_context.subtitle|safe }}</h2>
+	        		{{ lfc_context.description|safe }}
+	        	</div>
+	        	{% portlet_slot 'Left' lfc_context %}
+	        </div>
+    	</div>
+    	<div class="main" class="pregnant-main">
+	    	<div class="main-wrapper">
+	    		<div id="programcatalog-allentries-wrapper-pregnant">
+		    		{% for program in lfc_context.get_children %}
+		    			{% if not forloop.counter|divisibleby:2 %}
+			            	<div class="programcatalog-twoentries-wrapper">
+			            {% endif %}
+			    		<div class="programcatalog-entries-wrapper">
+				    		<div class="programcatalog-entries">
+					    		<a href="{{program.get_absolute_url}}">
+						        	<img  width="100%"
+						                     src="{{ program.get_image.image.url_400x400 }}"
+						                     alt="{{ program.get_image.image.title }}"
+						                     title="{{ program.get_image.title }}" />
+						        </a>
+						        <a class="programcatalog-entries-header" href="{{program.get_absolute_url}}">{{ program.title|safe }}</a>
+				            	{{ program.preview|safe }}<a href="{{program.get_absolute_url}}"  class="read-whole-test">&#8594;</a>
+				            </div>
+			            </div>
+			            {% if forloop.counter|divisibleby:2 or forloop.last %}
+			            	</div>
+			            	<div class="clear"> </div>
+			            {% endif %}
+		        	{% endfor %}
+	        	</div>
+	        </div>
+	    </div>
+	</div>
+{% endblock %}

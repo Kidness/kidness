@@ -1,0 +1,63 @@
+{% extends "lfc/base.html" %}
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+
+{% block section %}plain{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}
+
+{% block tabs-block %}
+	<div id="tabs" class="{% block custom-tabs-class %}{% endblock %}">
+		{% tabs %}
+		{% portlet_slot 'Top' lfc_context %}
+	</div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="left-column {% block custom-left-column-class %}{% endblock %}">
+    	<div class="left-column-wrapper">
+    		  {% block left-column %}
+    		 		{% portlet_slot 'Left' lfc_context %}
+    		 {% endblock %}
+        </div>
+    </div>
+    <div class="main {% block custom-main-class %}{% endblock %}">
+    	<div class="main-wrapper">
+	    	 {% block breadcrumbs_wrapper %}
+			 {% endblock %}
+			 {% block galery %}
+	    		{% if images %}
+		    		<div id="gallery">
+			        		<div class="tn3 album">
+			        			<ul>
+			        				{% for photo in images %} 
+			        					<li> 
+			        						<h4>{{photo.title }}</h4>
+										    <div class="tn3 description"></div>
+			        						<a href="{{ photo.image.url }}">
+				        						<img 
+									    		     class="trainer-photo"
+										             src="{{ photo.image.url_60x60  }}"
+										             alt="{{ photo.title }}"
+										             title="{{ photo.title}}" 
+										         />
+									         </a>
+			        					</li>
+			        				{% endfor %}
+			        			</ul>
+			        		</div>
+		        		</div>
+		        		<br/><br/>
+	        	 {% endif %}
+        	 {% endblock %}
+    		 {% block main %}
+    		 	{{ lfc_context.text|safe }}
+    		 {% endblock %}
+        </div>
+    </div>
+{% endblock %}

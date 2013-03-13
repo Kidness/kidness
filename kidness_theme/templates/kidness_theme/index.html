@@ -1,0 +1,224 @@
+{% extends "lfc/base.html" %}
+
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+
+{% block header %}
+	<div id="header" class="index-header">
+		<a href="/">
+			<img src="/media/kidness_theme/img/logo.png" class="logo"/>
+		</a>
+		<span class="phone"><span class="code">(812)</span>&nbsp;645&nbsp;0155</span>
+		<span class="address">Звенигородская&nbsp;ул.,12</span>
+		<div id="social-networks">
+			<a href="http://vk.com/club21907312" target="_blank"><img src="{{ MEDIA_URL }}kidness_theme/img/vk.png" /></a>
+			<div style="display:none"><br/><a href="#" target="_blank"><img src="{{ MEDIA_URL }}kidness_theme/img/fb.png" /></a></div>
+		</div>
+		<div class="flags">
+			&nbsp;
+		</div>
+	</div>
+{% endblock %}
+				
+{% block section %}plain{% endblock %}
+
+{% block javascript %}
+
+	<script type="text/javascript">
+		function activateMenuItem(number) {
+			switch(number){
+				case 1:
+					$(".bottom-menu-block").not("#bottom-menu-first").css("background", "none");
+					$("#bottom-menu-first").css("background", "url('/media/kidness_theme/img/menu_active.png') 0 0");
+					break;
+				case 2:
+					$(".bottom-menu-block").not("#bottom-menu-second").css("background", "none");
+					$("#bottom-menu-second").css("background", "url('/media/kidness_theme/img/menu_active.png') -234px 0");
+					break;
+				case 3:	
+					$(".bottom-menu-block").not("#bottom-menu-third").css("background", "none");
+					$("#bottom-menu-third").css("background", "url('/media/kidness_theme/img/menu_active.png') -468px 0");
+					break;
+				case 4:	
+					$(".bottom-menu-block").not("#bottom-menu-forth").css("background", "none");
+					$("#bottom-menu-forth").css("background", "url('/media/kidness_theme/img/menu_active.png') -701px 0");
+					break;
+			}
+		};
+		
+		function showShowcase(number) {
+			activateMenuItem(number);
+			$(".showcase").not("#showcase" + number).fadeOut("slow");
+			$("#showcase" + number).fadeIn("slow");
+		}
+		$(document).ready(function() {
+			var stopSwitching = false;
+			var delaySwitching = false;
+			
+			$("#bottom-menu-first").mouseover(function() {
+				delaySwitching = true;
+				showShowcase(1);
+			});
+			
+			$("#bottom-menu-second").mouseover(function() {
+				delaySwitching = true;
+				showShowcase(2);
+			});
+			
+			$("#bottom-menu-third").mouseover(function() {
+				delaySwitching = true;
+				showShowcase(3);
+			});
+			
+			$("#bottom-menu-forth").mouseover(function() {
+				delaySwitching = true;
+				showShowcase(4);
+			});
+			
+			$(".bottom-menu-block").click(function() {
+				stopSwitching = true;
+			});
+			
+			$(".bottom-menu-block").mouseout(function() {
+				delaySwitching = false;
+			});
+			
+			function showcaseSwitcher(number, timeout) {
+				showShowcase(number);
+				setInterval(function() {
+					if (!stopSwitching && !delaySwitching) {
+						showShowcase(number);
+					}
+				}, timeout);
+			};
+			$(window).load(function(){
+				var qnt = $(".showcase").length;
+				$(".showcase").each(function(index) {
+					var delayInterval = 6000;
+					var delay = delayInterval*(index);
+					setTimeout(function() {
+						showcaseSwitcher(index + 1, qnt*delayInterval);
+					}, delay);
+				});
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".open-in-lightbox-link").click(function(){
+				$(this).colorbox({open:true});
+				return false;
+			});		
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(".block").mouseenter(function(){
+				$(this).css("cursor", "pointer");
+				$(this).find(".block-header").css("text-decoration", "underline");
+			});
+			$(".block").mouseleave(function(){
+				$(this).css("cursor", "");
+				$(this).find(".block-header").css("text-decoration", "none");
+			});
+			$(".block").click(function(){
+				var link = $(this).find("a:first");
+				if($(link).hasClass("open-in-lightbox-link")) {
+					$(link).colorbox({open:true});	
+				} else if($(link).hasClass("portlet-link")) {
+					$(link).click();
+				} else {
+					window.location.href = $(link).attr("href");
+				}
+			});		
+		});
+	</script>
+	
+{% endblock %}
+{% block tabs-block %}
+	<div id="tabs" class="index">
+		{% tabs %}
+		{% with 0 as  blockcounter%}
+			{% for showcase in lfc_context.get_children %}
+				{% ifequal showcase.content_type "showcase"%}
+					{% ++ blockcounter %}
+					<div class="showcase" id="showcase{{blockcounter}}"
+					  {% ifnotequal blockcounter 1 %}style="display:none"{% endifnotequal %}
+					>
+						<div class="showcase-text">
+								<div class="showcase-header">
+									{{ showcase.text_subtitle|safe }}
+								</div>
+								<div class="showcase-h2">
+									{{ showcase.text_plain|safe }}
+								</div>
+						</div>
+						<img class="showcase-shadow"  src="/media/kidness_theme/img/showcase_shadow.png" alt="shadow" />
+						<img class="showcase-image" src="{{ showcase.get_image.image.url }}" alt="{{ showcase.text_title }}" />
+					</div>
+				{% endifequal  %}
+			{% endfor %}
+		{% endwith %}
+		<div class="clear"></div>
+		<div id="bottom-menu">
+			<div id="bottom-menu-first" class="bottom-menu-block active">
+			</div>
+			<div id="bottom-menu-second" class="bottom-menu-block">
+			</div>
+			<div id="bottom-menu-third" class="bottom-menu-block">
+			</div>
+			<div id="bottom-menu-forth" class="bottom-menu-block">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+		    
+{% block content %}
+
+    <div class="index-main">
+    	<div class="index-main-wrapper">
+    		<div id="three-blocks-block">
+    			{% with 0 as  blockcounter%}
+			    	{% for block in lfc_context.get_children %}
+			    		{% ifequal block.content_type "mainpageblock"%}
+			    			{% ++ blockcounter %}
+							<div id="block{{blockcounter}}" class="block">
+								<div class="photo-wrapper">
+									<img src="/media/kidness_theme/img/block_photo_shadow.png" alt="shadow" class="shadow"/>
+									<img src="{{ block.get_image.image.url }}" alt="{{block.text_title|safe}}" />
+								</div>
+								<div class="block-text">
+									<div class="block-header">
+										{% if block.linked_page%}
+											<a href="{{block.linked_page.get_absolute_url}}" 
+											{% if block.open_link_in_lightbox %}
+												class="open-in-lightbox-link"
+											{% endif %}
+											>{{block.text_title|safe}}</a>
+											</div> 
+											{{block.text_plain|safe}}
+										{% else %}
+											{% if block.portlet %}
+												<div style="display:none" class="portlet-link">
+													{{ block.portlet }}
+												</div>
+												{{block.text_title|safe}}
+												</div> 
+												{{block.text_plain|safe}} 
+											{% else %}
+												<a href="#">{{block.text_title|safe}}</a>
+												</div> 
+												 {{block.text_plain|safe}} 
+											{% endif %}
+										{% endif %}
+								</div>
+							</div>
+						 {% endifequal  %}
+					{% endfor %}
+				{% endwith %}
+			</div>
+        </div>
+    </div>
+{% endblock %}

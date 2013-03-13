@@ -1,0 +1,72 @@
+{% extends "lfc/base.html" %}
+
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+
+{% block section %}plain{% endblock %}
+{% block javascript %}
+<script type="text/javascript">
+		$(document).ready(function() {
+			if(!navigator.userAgent.match(/iPhone/i) && !navigator.userAgent.match(/iPad/i)) {
+				$("#begunok-wrapper-pregnant").mouseenter(function(e){
+					$("#begunok1").children().show();
+				});
+				$("#begunok1").mouseenter(function(e){
+					$(this).children().animate({ marginLeft: 0 }, 200);		
+				});
+				
+				$("#begunok2").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 218 }, 200);		
+				});
+				$("#begunok3").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 436 }, 200);		
+				});
+				$("#begunok-wrapper-pregnant").mouseleave(function(e){
+					$(".begunok").children().hide();
+				});
+			}
+			$(".begunok").click(function(e){
+				window.location.href = $(this).find("a").attr("href");
+			});
+	});
+	</script>
+{% endblock %}
+
+{% block tabs-block %}
+	<div id="tabs" class="pregnant-programs">
+		{% tabs %}
+		{% portlet_slot 'Top' lfc_context %}
+	</div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="left-column">
+   	 	<div class="left-column-wrapper">
+    		<div class="pregnant-left-column-numbered-wrapper">
+	    		<div id="pregnant-left-column-first" class="pregnant-left-column-numbered">
+	    			<div class="arrow-block">Выберите<br/> триместр</div>
+	        	</div>
+	        </div>
+        </div>
+    </div>
+    <div class="main" class="select-program">
+    	<div class="main-wrapper">
+			<div id="begunok-wrapper-pregnant" class="empty">
+				{% for child in lfc_context.get_children %}
+					{% ifequal forloop.counter 1 %}
+						<div class="begunok" id="begunok1" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:0;top:0;padding:0px;border:0px none;"><div style="display:none;opacity:1; z-index:2000;width:218px;height:111px;background:url('/media/kidness_theme/img/begunok_pregnant.png') no-repeat center top;"><a href="{{child.get_absolute_url}}"></a></div></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 2 %}
+						<div class="begunok" id="begunok2" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:218px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 3 %}
+						<div class="begunok" id="begunok3" style="z-index:2000;width:218px;margin:0;height:111px;position:absolute;left:436px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+				{% endfor %}
+			</div>
+        </div>
+    </div>
+{% endblock %}

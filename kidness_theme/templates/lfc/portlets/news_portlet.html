@@ -1,0 +1,23 @@
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+
+<div class="portlet news-portlet">
+    {% if title %}
+        <h1 class="portlet-header">
+            {{title}}
+        </h1>        
+    {% endif %}
+    <div class="portlet-body">
+    	<ul>
+	        {% for item in items %}
+		       	<li>
+			        {% if item.publication_date %}
+			        	<div class="news-date">{{ item.publication_date|date:"d" }}{{" "}}{{ item.publication_date|date:"m"|month_as_text }}</div>
+			        {% endif %}
+		        	<a href="{{ item.get_absolute_url }}" class="news-preview">{{ item.title }}</a>
+	        	</li>
+	        {% endfor %}
+        </ul>
+    </div>
+</div>
+&nbsp;

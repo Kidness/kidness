@@ -1,0 +1,16 @@
+{% load i18n %}
+{% if obj %}
+    <ul class="breadcrumbs">
+        <li class="label">  </li>
+        <li><a href="/">Kidness.ru</a></li>
+        <li class="separator">\</li>
+        {% for obj in objs %}
+            {% if not forloop.last %}
+                <li><a href="{{ obj.get_absolute_url }}">{{ obj.title }}</a></li>
+                <li class="separator">\</li>
+            {% else %}
+                <li class="last">{{ obj.title }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>    
+{% endif %}

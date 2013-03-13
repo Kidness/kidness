@@ -1,0 +1,16 @@
+{% extends "kidness_theme/program_form.html" %}
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+{% block ga_trackevent %}
+	 _gaq.push(['_trackEvent', 'welcome page заполнение формы', 'заполнение формы узнать о наличии мест беременные']);
+{% endblock %}
+{% block form-additional-field %}
+<li>	
+	<input type="hidden" name="consult-pregnant" id="consult-pregnant" value="1" />
+</li>
+<li>	
+	<input type="hidden" name="consult-program" id="consult-program" value="{{program}}"/>
+</li>
+{% endblock %}

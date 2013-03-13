@@ -1,0 +1,45 @@
+{% extends "kidness_theme/two_column.html" %}
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+
+{% block custom-left-column-class %}articles{% endblock %}
+{% block custom-tabs-class %}articles{% endblock %}
+{% block custom-main-class %}articles{% endblock %}
+
+{% block main %}
+		{% ifequal lfc_context.content_type "news"%}
+			<div class="article-header">{{ lfc_context.title }}</div>
+			<div class="addthis-wrapper">
+				<p>Расскажите друзьям<p/>
+				<!-- AddThis Button BEGIN -->
+				<div class="addthis_toolbox addthis_default_style ">
+					<a class="addthis_button_preferred_1"></a>
+					<a class="addthis_button_preferred_2"></a>
+					<a class="addthis_button_preferred_3"></a>
+					<a class="addthis_button_preferred_4"></a>
+					<a class="addthis_button_compact"></a>
+					<a class="addthis_counter addthis_bubble_style"></a>
+				</div>
+				<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+				<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5076d2016bd6e8f1"></script>
+				<!-- AddThis Button END -->
+			</div>
+			{{ lfc_context.description|safe }}
+	    {% else %}
+	    	<div id="articles-list"> 
+	    		{% for article in lfc_context.get_children %}
+		    		<div class="article-block">
+			    		<div class="article-header"><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></div>
+						{{ article.description|safe }}
+					</div>
+	        	{% endfor %}
+	        </div>
+	    {% endifequal  %}
+{% endblock %}
+
+ 
+
+ 
+

@@ -1,0 +1,270 @@
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+<div class="portlet signup-button-portlet" id="portlet_{{id}}">
+	<script type="text/javascript">
+	 	$(document).ready(function(){
+	 		portletBlock = $("#portlet_{{id}}");
+	 		$(portletBlock).find(".sign-button-portlet").click(function(){
+	 			{% if tracking_event %}
+	 				_gaq.push(['_trackEvent', '{{tracking_event.category}}', '{{tracking_event.action}}']);
+	 			{% else %}
+	 				_gaq.push(['_trackEvent', 'открытие формы', 'открытие формы вводной консультации']);
+	 			{% endif %}
+	 			$(this).colorbox({open: true, inline:true, href:"#portlet_{{id}} #call-me-form-container" });
+	 			return false;
+	 		});
+	 	});
+	</script>
+	<script type="text/javascript" src="/media/kidness_theme/js/jquery.maskedinput-1.3.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(portletBlock).find("#consult-phone").mask("+7(999) 999-99-99");
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(portletBlock).find("input").each(function(){
+				if($(this).val() == $(this).attr("placeholder")){
+					$(this).val("");
+				}
+			});
+			function hasPlaceholderSupport() {
+				var i = document.createElement('input');
+				return 'placeholder' in i;
+			}
+			if(!hasPlaceholderSupport()){
+				$(portletBlock).find("#call-me-form").placeholder();
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if(!hasBorderRadius()) {
+				$(portletBlock).find(".rounded-coreners").formCorners(8);
+			}
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$(portletBlock).find(".call-me-form-body ul li input").mouseenter(function(){
+				$(this).parents("li").find("label:first").addClass("active-label");
+			});
+			$(portletBlock).find(".call-me-form-body ul li input").mouseout(function(){
+				$(this).parents("li").find("label:first").removeClass("active-label");
+			});
+			$(portletBlock).find(".call-me-form-body ul li textarea").mouseenter(function(){
+				$(this).parents("li").find("label:first").addClass("active-label");
+			});
+			$(portletBlock).find(".call-me-form-body ul li textarea").mouseout(function(){
+				$(this).parents("li").find("label:first").removeClass("active-label");
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		function setActivityMode(btn) {
+			$(this).find("#wait").show();
+			$(this).find(".call-me-form-body").css("opacity", 0.4);
+			$(btn).attr("data-disabled", "disabled");
+		}
+		function unsetActivityMode(btn) {
+			$(this).find("#wait").hide();
+			$(this).find(".call-me-form-body").css("opacity", 1);
+			$(btn).removeAttr("data-disabled");
+		}
+	
+		$(document).ready(function() {
+			
+			$(portletBlock).find("#call-me-submit").click(function() {
+				var form = $(this).closest("form");
+				unsetActivityMode.call(container, btn);
+				if ($(this).attr("data-disabled") !== undefined) {
+					return false;
+				}
+				
+				var container = $(this).closest("#call-me-form-container");
+				var btn = $(this);
+				
+				var name = $(form).find("#consult-name").val();
+				var phone = $(form).find("#consult-phone").val();
+				var email = $(form).find("#consult-email").val();
+				var comment = $(form).find("#consult-comment").val();
+				{% if program %}
+					var program = $(form).find("#consult-program").val();
+				{% endif %}
+				var getnews = $(form).find("#consult-getnews").attr("checked");
+				
+				if (name == "") {
+					$(form).find("#consult-name").parent().find(".errors").html("Введите имя");	
+					$(form).find("#consult-name").parents("li").addClass("error");
+					return false;
+				} else {
+					$(form).find("#consult-name").parents("li").removeClass("error");
+					$(form).find("#consult-name").parent().find(".errors").html("");
+				}
+				if (phone == "") {
+					$(form).find("#consult-phone").parent().find(".errors").html("Введите номер телефона");	
+					$(form).find("#consult-phone").parents("li").addClass("error");
+					return false;
+				} else {
+					$(form).find("#consult-phone").parents("li").removeClass("error");
+					$(form).find("#consult-phone").parent().find(".errors").html("");
+				}
+				
+				var data = {
+						name: name,
+						phone: phone,
+						url: window.location.href
+					};
+				{% if program %}
+					data.program = program;
+				{% endif %}
+				if (email) {
+					data.email = email;
+					data.getnews = getnews;
+				}
+				if (comment) {
+					data.comment = comment;
+				}
+				var pregnant = $(form).find("#consult-pregnant");
+				if (pregnant.length > 0) {
+					data.pregnant = 1;
+				}
+				setActivityMode.call(container, btn);
+					$.ajax({
+						url: "/consult-form",
+						type: "POST",
+						dataType: "json",
+						data:  data,
+						success: function(data){
+							$(form).find(".errors").html("");
+							if (data.errors) {
+								if (data.errors.name) {
+									$(form).find("#consult-name").parent().find(".errors").html(data.errors.name);	
+									$(form).find("#consult-name").parents("li").addClass("error");
+								} else {
+									$(form).find("#consult-name").parents("li").removeClass("error");
+								}
+								if (data.errors.phone) {
+									$(form).find("#consult-phone").parent().find(".errors").html(data.errors.phone);	
+									$(form).find("#consult-phone").parents("li").addClass("error");
+								} else {
+									$(form).find("#consult-phone").parents("li").removeClass("error");
+								}
+								if (data.errors.email) {
+									$(form).find("#consult-email").parent().find(".errors").html(data.errors.email);	
+									$(form).find("#consult-email").parents("li").addClass("error");
+								} else {
+									$(form).find("#consult-email").parents("li").removeClass("error");
+								}
+							} else {
+								$(container).find("#wait").hide();
+								$(form).find("#call-me-submit-hidden").click();
+								setTimeout($.colorbox.close, 1500);
+							}
+							unsetActivityMode.call(container, btn);
+						}
+				});
+				return false;
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(portletBlock).find("#call-me-submit-hidden").click(function(){
+				{% if tracking_event_success %}
+	 				_gaq.push(['_trackEvent', '{{tracking_event_success.category}}', '{{tracking_event_success.action}}']);
+	 			{% else %}
+	 				_gaq.push(['_trackEvent', 'welcome page заполнение формы', 'заполнение формы вводной консультации']);
+	 			{% endif %}
+	 			$(this).colorbox({open: true, inline:true, href:"#portlet_{{id}} .call-me-form-thankyou" });
+	 			return false;
+	 		});
+		});
+	</script>
+		
+	<a class="sign-button-portlet portlet-link" href=".">
+		{% if button_image %}
+			<img src="/media/{{button_image.image}}" />
+		{% else %}
+	    	<img src="/media/kidness_theme/img/sign_button.png" />
+		{% endif %}
+	</a>
+	<div id="call-me-form-wrapper" style="display:none">
+		<div class="call-me-form-thankyou">
+			{% if thankyou_text %}
+				{{thankyou_text}}
+			{% else %}
+				Спасибо за заявку!
+			{% endif %}
+		</div>
+		<div id="call-me-form-container">
+			<div class="call-me-form-block">
+				<form id="call-me-form">
+					<div class="call-me-form-header">
+						{% if dialog_header %}
+							{{dialog_header}}
+						{% else %}
+							Запишитесь на бесплатную консультацию в KidnessClub
+						{% endif %}
+					</div>
+					<div class="call-me-form-subheader">
+						{% if dialog_subheader %}
+							{{dialog_subheader}}
+						{% else %}
+							Консультация по индивидуальному подбору фитнес–программ проводится врачом лечебной физкультуры и детским психологом. Заполните форму и мы свяжемся с вами, чтобы уточнить дату и удобное время консультации.<br/>
+						{% endif %}
+					</div>
+					<div class="call-me-form-wrapper" style="z-index:1000">
+						<div id="wait" style="display:none;position:absolute;top:100px;left:300px;z-index:1001">
+				    		<img src="/media/kidness_theme/colorbox/images/loading.gif"/>
+				    	</div>
+						<div class="call-me-form-body">
+							<ul>
+								<li class="required">
+									<label class="right-label" for="consult-name">Как&nbsp;вас&nbsp;зовут</label>
+									<div class="reqired-star">&#42;</div>
+									<input placeholder="Имя Фамилия" name="consult-name" id="consult-name" class="rounded-coreners" type="text"/>
+									<div class="errors"></div>
+								</li>
+								<li class="required">	
+									<label class="right-label" for="consult-phone">Телефон&nbsp;для&nbsp;связи</label>
+									<div class="reqired-star">&#42;</div>
+									<input placeholder="+7_ _ _  _ _ _ _ _ _ _" name="consult-phone" id="consult-phone" class="rounded-coreners" type="text"/>
+									<div class="errors"></div>
+								</li>
+								<li class="norequired">
+									<label class="right-label" for="consult-email">E-mail</label>
+									<input name="consult-email" id="consult-email" class="rounded-coreners" type="text"/>
+									<div id="consult-getnews-block">
+										<input name="consult-getnews" id="consult-getnews" class="rounded-coreners" type="checkbox"/>
+										<label id="consult-getnews-label" for="consult-getnews">я хочу получать новости по e-mail</label>
+									</div>
+									<div class="errors"></div>
+								</li> 
+								<li class="norequired">
+									<label class="right-label" for="consult-comment">Комментарии</label>
+									<textarea name="consult-comment" id="consult-comment" class="rounded" type="text"></textarea>
+								</li>
+								{% if program %}
+								<li>	
+									<input type="hidden" name="consult-program" id="consult-program" value="{{program.id}}" class="rounded" type="text"/>
+								</li>
+								{% endif %}
+							</ul>
+							<div class="call-me-submit-block">
+								<a id="call-me-submit" href="#">
+									{% if dialog_button_image %}
+										<img src="/media/{{dialog_button_image.image}}" />
+									{% else %}
+								    	<img src="/media/kidness_theme/img/submit_form_btn.png"/>
+									{% endif %}
+								</a>
+								<a id="call-me-submit-hidden" href="."></a>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

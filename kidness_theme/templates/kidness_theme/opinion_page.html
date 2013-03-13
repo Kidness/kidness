@@ -1,0 +1,85 @@
+{% extends "lfc/base.html" %}
+{% load portlets_tags %}
+
+{% block section %}plain{% endblock %}
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#opinion-send-form").submit(function(){
+				var client = $(this).find("input[name=client]");
+				var program = $(this).find("select[name=program]");
+				var opinion = $(this).find("textarea[name=text]");
+				var data = {
+						client: client.val(), 
+						program: program.val(), 
+						opinion: opinion.val()
+					};
+				$.ajax({
+					url: "/opinion-save",
+					data:data,
+					type:"POST",
+					success: function(data){
+						$("#opinion-form").hide();
+						$("#thankyoubox").show();
+					},
+					dataType: "json"
+				});
+				return false;
+			});
+		});
+	</script>
+{% endblock %}
+{% block content %}
+
+    <div class="left-column">
+    	<div class="left-column-wrapper">
+    		 
+        </div>
+    </div>
+    <div class="main">
+    	<div class="main-wrapper">
+    		{% if not client.id %}
+    			Чтобы оставить отзыв авторизирутесь с помощью одной из предложенных сетей<br/><br/>
+    			<ol id="authorizer-select">
+	    			<li value="vk">
+	    				<a vk-login" href="http://oauth.vk.com/authorize?client_id=3012490&redirect_uri=new.kidness.ru/vklogin&response_type=code" title="Зайти через ВКонтакте">Зайти через ВКонтакте</a>
+	    			</li>
+    			</ol>
+    		{% endif %}
+    		<div id="thankyoubox" style="display:none"> 
+    			Спасибо за ваш отзыв!
+    		</div>
+    		{% if client.id %}
+	    		<div id="opinion-form" >
+	    			<div>
+			    		<img 
+							    		     class="client-photo"
+								             src="{{ client.path_to_photo }}"
+								             alt="{{ client.first_name }}&nbsp;{{ client.last_name }}"
+								             title="{{ client.first_name }}&nbsp;{{ client.last_name }}" 
+						/>
+			    		Здравствуйте, {{ client.first_name }},<br/>
+			    		оставьте пожалуйста отзыв о качестве нашей работы:
+		    		</div>
+		    		<br/><br/>
+		    		<form type="post" action="#" id="opinion-send-form">
+		    			<div>
+			    			<input name="client" type="hidden" value="{{client.id}}"/>
+			    			<select name="program">
+			    				{% for program in program_list %}
+			    					<option value="{{ program.id }}">{{ program.title }}</option>
+			    				{% endfor %}
+			    			</select>
+			    			<br/><br/>
+			    			<textarea name="text" id="opinion-text"  cols="1" rows="10" >
+			    			
+			    			</textarea>
+			    			<br/>
+			    			<input type="submit" value="отправить отзыв" id="opinion-send-button"/>
+			    		</div>
+		    		</form>
+	    		</div>
+    		{% endif %}
+        </div>
+    </div>
+{% endblock %}

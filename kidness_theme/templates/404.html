@@ -1,0 +1,26 @@
+{% extends "lfc/base.html" %}
+{% load i18n %}
+
+{% block section %}login{% endblock %}
+
+{% block javascript %}{% endblock %}
+{% block tabs-block %}{% endblock %}
+
+{% block content %}
+<div class="content-404">
+	<br/><br/>
+	<h1>404.</h1> 
+	<p>Извините, такой страницы не существует. <br/>
+	Если вы уверены, что эта страница должна быть здесь, то напишите нам <br/>
+	пожалуйста по адресу <a class="mailto" href="mailto:info@kidness.ru">info@kidness.ru</a>, или позвоните по телефону<br/>
+	<span class="phone">(812) 645-01-55</span>. Мы попытаемся ее найти.</p>
+	<br/><br/>
+	<div style="font-weight:700">Возможно вы искали:</div>
+	<ul>
+		<li><a href="/deti">Программы для детей</a></li>
+		<li><a href="/pr2">Программы для беременных</a></li>
+		<li><a href="/contacts">Как с нами связаться</a></li>
+	</ul>
+	<br/><br/><br/>
+</div>
+{% endblock %}

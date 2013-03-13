@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>
+            {% block title %}{{ PORTAL.title }} - {{ lfc_context.title }}{% endblock %}
+        </title>
+        <style type="text/css">
+        	/* Conract form */
+#call-me-form-container{
+	background-color: #fff;
+	width:370px;
+	height: 350px;
+}
+.call-me-form-wrapper {
+	position:relative;
+}
+.call-me-form-block {
+	position:absolute;
+	padding: 20px 0 0 5px;
+}
+#call-me-form {
+	position:relative;
+}
+.call-me-form-body {
+	position:relative;
+	height: 235px;
+}
+.call-me-form-body ul li {
+	list-style: none;
+	margin: 3px 0 3px 0;
+	padding: 15px 10px 15px 10px;
+	background-color: #eee;
+	position:relative;
+}
+.call-me-form-body ul li input{
+	position: absolute;
+	left:120px;
+	top: 15px;
+	width: 200px;
+}
+.call-me-form-header {
+	color: #0095D0;
+	font-size: 24px; 
+	padding-bottom: 10px;
+	text-align: center;
+}
+.call-me-submit-block {
+	text-align: center;
+	position: absolute;
+	bottom: 0;
+	left: 90px;
+}
+.call-me-form-subheader {
+	font-size: 14px; 
+	padding: 0 5px 10px 5px;
+}
+#call-me-submit {
+}
+.call-me-form-thankyou {
+	color: #0095D0;
+	font-size: 24px; 
+	padding: 20px 20px 0 20px;
+	text-align: center;
+}
+.call-me-form-body .errors {
+	color: red;
+	margin: 5px 0 0 110px;
+}
+        </style>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$("#call-me-submit-hidden").colorbox();
+				$("#call-me-submit").click(function(){
+					var name_ = $("#call-name").val();
+					var phone_ = $("#call-phone").val();
+					$.ajax({
+						url: "/call-me",
+						type: "POST",
+						dataType: "json",
+						data:  {
+							name: name_,
+							phone: phone_
+						},
+						success: function(data){
+							$(".errors").html("");
+							if (data.errors) {
+								if (data.errors.name) {
+									$("#call-name").parent().find(".errors").html(data.errors.name);	
+								}
+								if (data.errors.phone) {
+									$("#call-phone").parent().find(".errors").html(data.errors.phone);	
+								}
+							} else {
+								$("#call-me-submit-hidden").click();
+								$("#cboxClose").click();
+							}
+						}
+					});
+					return false;
+				});
+			});
+		</script>
+	</head>
+    <body class="{{ lfc_context.slug }} {% block section %}{% endblock %}">
+		<div id="call-me-form-container" >
+			<div class="call-me-form-wrapper" >
+				<div class="call-me-form-block">
+					<form id="call-me-form">
+						<div class="call-me-form-header">
+							Заказать звонок бесплатно
+						</div>
+						<div class="call-me-form-subheader">
+							Оставьте свои данные и удобное сремя для<br/>
+							звонка, наш менеджер перезвонит Вам.
+						</div>
+						<div class="call-me-form-body">
+							<ul>
+								<li>
+									<label for="call-time">Удобное время</label>
+									<input name="call-time" type="text"></input>
+								</li>
+								<li>
+									<label for="call-name">Ваше Имя</label>
+									<input name="call-name" id="call-name" type="text"></input>
+									<div class="errors"></div>
+								</li>
+								<li>	
+									<label for="call-phone">Телефон</label>
+									<input name="call-phone" id="call-phone"  type="text"></input>
+									<div class="errors"></div>
+								</li>
+							</ul>
+							<div class="call-me-submit-block">
+								<a id="call-me-submit" href="#">
+									<img src="/media/kidness_theme/img/callme_button.png"/>
+								</a>
+								<a id="call-me-submit-hidden" href="/form-thankyou"></a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

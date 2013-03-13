@@ -1,0 +1,259 @@
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+{% load workflows_tags %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>
+            {% block title %}{{ lfc_context.title }}{% endblock %}
+        </title>
+        <link rel="alternate" type="application/rss+xml" title="RSS" href='/rss/blog' />
+		<link rel="shortcut icon" href="{{ MEDIA_URL }}kidness_theme/img/favicon.ico">
+        <meta name="generator" content="LFC - Lightning Fast CMS" />
+        {% if lfc_context.get_meta_keywords %}<meta name="keywords" content="{{lfc_context.get_meta_keywords}}" />{% endif %}
+        {% if lfc_context.get_meta_description %}<meta name="description" content="{{lfc_context.get_meta_description}}" />{% endif %}
+
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}lfc/lightbox/css/jquery.lightbox-0.5.css">
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}kidness_theme/css/reset-fonts.css">
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}lfc/blueprint/src/grid.css?v=1">
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}kidness_theme/css/kidness.css?v=6">
+        <!--[if IE]>
+        	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}kidness_theme/css/kidness_ie.css?v=1">
+        <![endif]-->
+        <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}kidness_theme/tn3/skins/tn3/tn3.css"></link>
+        <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}kidness_theme/mediaelement/mediaelementplayer.css"></link>
+        
+        <link type="text/css" rel="stylesheet" href="{{ MEDIA_URL }}kidness_theme/colorbox/colorbox.css?v=4"></link>
+        
+        
+        {% block css %}{% endblock %}
+
+        <script type="text/javascript" src="{{ MEDIA_URL }}lfc/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}lfc/jquery/jquery.tools.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}lfc/lightbox/js/jquery.lightbox-0.5.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}kidness_theme/js/lfctheme.js"></script>
+        
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}kidness_theme/colorbox/jquery.colorbox.js"></script>
+        
+        <script src="{{ MEDIA_URL }}kidness_theme/mediaelement/mediaelement-and-player.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}kidness_theme/tn3/js/jquery.tn3lite.min.js"></script>
+        <script src="{{ MEDIA_URL }}kidness_theme/mediaelement/tn3.mediaelement.min.js" type="text/javascript"></script>
+	
+		<script type="text/javascript" src="{{ MEDIA_URL }}kidness_theme/js/placeholder.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}kidness_theme/js/jquery.corner.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}kidness_theme/js/corners.js"></script>
+		
+ 		<script type="text/javascript">
+ 			$(".programcatalog-entries").mouseover(function(){
+				$(this).css("background", '#fff url("/media/kidness_theme/img/progr_podlozhka_active.png") repeat left top');
+			});
+			$(".programcatalog-entries").mouseout(function(){
+				$(this).css("background", '#fff url("/media/kidness_theme/img/progr_podlozhka.png") repeat left top');
+			});
+ 			function equalizeHeight() {
+ 				$(".programcatalog-twoentries-wrapper").each(function(){
+ 					var height_ = $(this).height();
+ 					var paddingTop = $(this).find(".programcatalog-entries").css("padding-top").replace("px", "");
+ 					var paddingBottom = $(this).find(".programcatalog-entries").css("padding-bottom").replace("px", "");
+ 					var marginTop = $(this).find(".programcatalog-entries").css("margin-top").replace("px", "");
+ 					var marginBottom = $(this).find(".programcatalog-entries").css("margin-bottom").replace("px", "");
+ 					height_ = height_ - paddingTop - paddingBottom - marginTop - marginBottom;
+ 					$(this).find(".programcatalog-entries").height(height_ );
+ 				});
+ 			}
+ 			$(document).ready(function(){
+ 				window.onload = equalizeHeight;
+ 			});
+ 		</script>
+ 		<script type="text/javascript">
+			$(document).ready(function() {
+				//Thumbnailer.config.shaderOpacity = 1;
+				var tn1 = $('#gallery').tn3({
+					skinDir:"skins",
+					imageClick:"fullscreen",
+					image:{
+						maxZoom:1.5,
+						crop:true,
+						clickEvent:"dblclick",
+						transitions:[
+						    {
+								type:"blinds"
+							},{
+								type:"grid"
+							},{
+								type:"grid",
+								duration:460,
+								easing:"easeInQuad",
+								gridX:1,
+								gridY:8,
+								// flat, diagonal, circle, random
+								sort:"random",
+								sortReverse:false,
+								diagonalStart:"bl",
+								// fade, scale
+								method:"scale",
+								partDuration:360,
+								partEasing:"easeOutSine",
+								partDirection:"left"
+							}
+						]
+					},
+					content:[{
+							    plugin: "mediaelement",
+							    options: { }
+						}]
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".vk-login2").click(function(){
+					var href_ = "http://oauth.vk.com/authorize?client_id=3012490&redirect_uri=new.kidness.ru/vklogin&response_type=code";
+					$.ajax({
+						 url: href_,
+						 type: "GET",
+						 data: {},
+						 success: function(data) {
+						    alert(data);
+						  },
+						 dataType: "json"
+					});
+				});
+			});
+		</script>
+        {% block javascript %}{% endblock %}
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-1866000-4']);
+			_gaq.push(['_trackPageview']);
+		
+			(function() {
+		    	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+    </head>
+    <body class="{{ lfc_context.slug }} {% block section %}{% endblock %}">
+    <!--Start of Zopim Live Chat Script-->
+	<script type="text/javascript">
+	window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+	d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+	_.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+	$.src='//cdn.zopim.com/?fCkiUH0zUnra8PufcvNMdvl2fI5eqX6a';z.t=+new Date;$.
+	type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+	</script>
+	<!--End of Zopim Live Chat Script-->
+        {% if user.is_authenticated %}
+
+            <div id="management">
+                <div class="container">
+                    <div class="span-6">
+                        {% templates %}
+                    </div>
+                    <div class="span-6">
+                        {% if lfc_context and lfc_context.get_workflow %}
+                            <form action="{% url lfc_do_transition lfc_context.id %}"
+                                  method="POST">
+                                {% transitions lfc_context %}
+                                <input type="submit" value="{% trans 'Go' %}" />
+                            </form>
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </div>
+                    <div id="login" class="span-12 last">
+                        <span class="site-actions">
+                            {% if user.last_name %}
+                                <span>{{user.first_name}} {{user.last_name}}</span>
+                            {% else %}
+                                <span>{{ user.username }}</span>
+                            {% endif %}
+                            | <a class="site-action" href="{% url lfc_logout %}">{% trans "Logout" %}</a>
+                            {% if lfc_context %}
+                                | <a class="site-action" href="{% url lfc_manage_object lfc_context.id %}">{% trans "Manage" %}</a>
+                            {% else %}
+                                | <a class="site-action" href="{% url lfc_manage_portal %}">{% trans "Manage" %}</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+		<div id="main-container" class="rounded-block">
+			{% block header %}
+				<div id="header">
+					<a href="/">
+						<img src="/media/kidness_theme/img/logo.png" class="logo"/>
+					</a>
+					<span class="phone"><span class="code">(812)</span>&nbsp;645&nbsp;0155</span>
+					<div id="social-networks">
+						<a href="http://vk.com/club21907312" target="_blank"><img src="{{ MEDIA_URL }}kidness_theme/img/vk.png" /></a>
+						<div style="display:none"><a href="#" target="_blank"><img src="{{ MEDIA_URL }}kidness_theme/img/fb.png" /></a></div>
+					</div>
+					<div id="topRightSlot">
+						{% if lfc_context %}
+						{% portlet_slot 'TopRight' lfc_context %}
+						{% endif %}
+					</div>
+		            <div class="flags">
+		                &nbsp;
+		               
+		            </div>
+		        </div>
+		    {% endblock %}
+	        {% block tabs-block %}
+			    <div id="tabs">
+			        {% tabs %}
+			        {% portlet_slot 'Top' lfc_context %}
+			    </div>
+			{% endblock %}
+         	{% block wrapper %}
+                <div id="content">
+                	{% block content %}
+       				 {% endblock %}
+        		</div>
+        	{% endblock %}
+        	<div id="footer">
+        		<a href="/">
+        			<img class="logo" src="/media/kidness_theme/img/middle_logo.png"/>
+        		</a>
+	        	Звенигородская ул., 12. Телефон +7 (812) 645 0155. Почта info@kidness.ru<br/>
+	        	Мы открыты с 10:00 до 20:00 без выходных<br/>
+	        	Kidness - первый фитнес-клуб для детей.
+	        	<div class="addthis-wrapper">
+					<div style="float:left">Расскажите о нас друзьям&nbsp;</div>
+					<!-- AddThis Button BEGIN -->
+					<div class="addthis_toolbox addthis_default_style ">
+						<a class="addthis_button_preferred_1"></a>
+						<a class="addthis_button_preferred_2"></a>
+						<a class="addthis_button_preferred_3"></a>
+						<a class="addthis_button_preferred_4"></a>
+						<a class="addthis_button_compact"></a>
+						<a class="addthis_counter addthis_bubble_style"></a>
+					</div>
+					<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+					<script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5076d2016bd6e8f1"></script>
+					<!-- AddThis Button END -->
+				</div>
+        	</div>
+		</div>
+		
+		<div style="display:none">
+			<img src="{{ MEDIA_URL }}kidness_theme/img/logo_for_vk4.jpg"/>
+		</div>
+		<!-- Yandex.Metrika counter -->
+		<script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			try { var yaCounter1138085 = new Ya.Metrika({id:1138085, enableAll: true, webvisor:true});}
+			catch(e) { }
+		</script>
+		<noscript><div><img src="//mc.yandex.ru/watch/1138085" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+		<!-- /Yandex.Metrika counter -->
+		{% block block-google %}{% endblock %}
+    </body>
+</html>

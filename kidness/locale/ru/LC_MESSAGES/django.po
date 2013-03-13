@@ -1,0 +1,53 @@
+# Translation of django.po to russian.
+# This file is distributed under the same license as the Django package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Django\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-10 00:56+0200\n"
+"PO-Revision-Date: 2009-04-10 18:37+0400\n"
+"Last-Translator: Ekaterina Kiseleva <catyshka@gmail.com>\n"
+"Language-Team: Russian\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: models.py:32
+msgid "ClientOpinion"
+msgstr ""
+
+#: models.py:33
+msgid "ClientOpinions"
+msgstr ""
+
+#: models.py:52
+msgid "ClientOpinionCatalog"
+msgstr ""
+
+#: models.py:53
+msgid "ClientOpinionCatalogs"
+msgstr ""
+
+#: models.py:73 models.py:74
+msgid "News"
+msgstr ""
+
+#: models.py:100
+msgid "ShowCase"
+msgstr "Витрина"
+
+#: models.py:101
+msgid "ShowCases"
+msgstr "Витрины"
+
+#: models.py:127
+msgid "MainPageBlock"
+msgstr "Блок на главной странице"
+
+#: models.py:128
+msgid "MainPageBlocks"
+msgstr "Блоки на главной странице"

@@ -1,0 +1,51 @@
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% if  items%}
+<script type="text/javascript">
+		function anouncementSwitcher(number, timeout) {
+			$(".anouncement").hide();
+			$("#anouncement-" + number).show();
+			setInterval(function() {
+				$(".anouncement").not("#anouncement-" + number).fadeOut("slow");
+				$("#anouncement-" + number).fadeIn("slow");
+			}, timeout);
+		};
+		$(window).load(function(){
+			$("#anouncement-1").show();
+			$("#anouncement-1").css("margin-left", "-300px");
+			$("#anouncement-1").animate({ marginLeft: 0}, 1500, null, function(){
+				//$("#anouncements-portlet-podlozhka").fadeIn();
+				});	
+			
+			$("#anouncements-portlet-podlozhka").css("margin-left", "-300px");
+			$("#anouncements-portlet-podlozhka").show();
+			$("#anouncements-portlet-podlozhka").animate({ marginLeft: 0}, 1500);	
+			
+			var qnt = $(".anouncement").length;
+			$(".anouncement").each(function(index) {
+				var delay = 6000*(index);
+				setTimeout(function() {
+					anouncementSwitcher(index + 1, qnt*6000);
+				}, delay);
+			});
+		});
+</script>
+<div id="anouncements-portlet" class="portlet">
+	<div id="anouncement-wrapper">
+		<div style="display:none" id="anouncements-portlet-podlozhka">
+			<img src="/media/kidness_theme/img/anouncemant_podlozhka.png" />
+		</div>
+	        {% for item in items %}
+	        	<div style="display:none" id="anouncement-{{forloop.counter}}" class="anouncement">
+	        		<div class="anouncement-image">
+		        		<img href="{{item.get_absolute_url}}" src="{{item.get_image.image.url}}" alt="{{item.get_image.image.title}}"/>
+		        	</div>
+	        		<div class="anouncement-preview">
+		        		<a href="{{item.linked_page.get_absolute_url}}">{{ item.description }} &#8594;</a>
+		        	</div>
+	        	</div>
+	        {% endfor %}
+	   </div>
+</div>
+&nbsp;
+{% endif %}

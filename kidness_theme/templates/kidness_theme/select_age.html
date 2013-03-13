@@ -1,0 +1,79 @@
+{% extends "lfc/base.html" %}
+
+{% load i18n %}
+{% load lfc_tags %}
+{% load lfc_theme_tags %}
+{% load portlets_tags %}
+
+{% block section %}plain{% endblock %}
+{% block javascript %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			if(!navigator.userAgent.match(/iPhone/i) && !navigator.userAgent.match(/iPad/i)) {
+				$("#begunok-wrapper").mouseenter(function(e){
+					$("#begunok1").children().show();
+				});
+				$("#begunok1").mouseenter(function(e){
+					$(this).children().animate({ marginLeft: 3 }, 165);		
+				});
+				
+				$("#begunok2").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 165 }, 165);		
+				});
+				$("#begunok3").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 332 }, 165);		
+				});
+				$("#begunok4").mouseenter(function(e){
+					$("#begunok1").children().animate({ marginLeft: 490 }, 165);		
+				});
+				$("#begunok-wrapper").mouseleave(function(e){
+					$(".begunok").children().hide();
+				});
+			}
+			$(".begunok").click(function(e){
+				window.location.href = $(this).find("a").attr("href");
+			});
+	});
+	</script>
+{% endblock %}
+
+{% block tabs-block %}
+	<div id="tabs" class="children-programs">
+		{% tabs %}
+		{% portlet_slot 'Top' lfc_context %}
+	</div>
+{% endblock %}
+
+{% block content %}
+
+    <div class="left-column">
+    	<div class="left-column-wrapper">
+    		<div class="left-column-numbered-wrapper">
+	    		<div id="left-column-first" class="left-column-numbered">
+	    			<div class="arrow-block">Выберите возраст<br/>вашего ребенка</div>
+	        	</div>
+	        </div>
+        </div>
+    </div>
+    <div class="main" class="select-program">
+    	<div class="main-wrapper">
+			<div id="begunok-wrapper" class="empty">
+				{% for child in lfc_context.get_children %}
+					{% ifequal forloop.counter 1 %}
+						<div class="begunok" id="begunok1" style="z-index:2000;width:165px;margin:0;height:111px;position:absolute;left:-3px;top:0;padding:0px;border:0px none;"><div style="display:none;opacity:1; z-index:2000;width:165px;height:111px;background:url('/media/kidness_theme/img/begunok.png') no-repeat center top;"><a href="{{child.get_absolute_url}}"></a></div></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 2 %}
+						<div class="begunok" id="begunok2" style="z-index:2000;width:165px;margin:0;height:111px;position:absolute;left:165px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 3 %}
+						<div class="begunok" id="begunok3" style="z-index:2000;width:165px;margin:0;height:111px;position:absolute;left:332px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+					{% ifequal forloop.counter 4 %}
+						<div class="begunok" id="begunok4" style="z-index:2000;width:165px;margin:0;height:111px;position:absolute;left:490px;top:0;padding:0px;border:0px none;"><a href="{{child.get_absolute_url}}"></a></div>
+					{% endifequal %}
+				{% endfor %}
+			</div>
+			{{ lfc_context.text|safe }}
+        </div>
+    </div>
+{% endblock %}
