@@ -257,7 +257,6 @@ body {
 }
 #programm-description {
 	padding: 40px 0 40px 0;
-	text-align: justify;
 }
 .clear {
 	clear:both;
@@ -267,11 +266,9 @@ body {
 	float: left;
 }
 .program-sibling-right {
-	text-align: justify;
 	padding: 0 0 5px 10px;
 }
 .program-sibling-left {
-	text-align: justify;
 	padding: 0 10px 5px 0;
 }
 .short-info-block {
@@ -830,7 +827,6 @@ a.read-whole-test:hover{
 	padding: 0 0 10px 0;
 }
 .trainer-block {
-	text-align: justify;
 }
  
 /* Conract form */
@@ -1002,7 +998,7 @@ a.read-whole-test:hover{
 #YMapsID {
 	width:600px;
 	height:400px;
-	padding: 20px 0 20px 30px;
+	padding: 20px 0 20px 0;
 }
 #begunok-wrapper a{
 	display: block;
@@ -1050,7 +1046,7 @@ a.read-whole-test:hover{
 	background: url('/media/kidness_theme/img/meter_pregnant_empty.png') no-repeat scroll 0% 0% transparent; 
 }
 .programcatalog-entries .programcatalog-entries-text {
-	text-align: justify;
+
 }
 a.sign-button {
 	display: block;
@@ -1100,6 +1096,7 @@ a.sign-button {
 .text-portlet .portlet-header {
 }
 .text-portlet .portlet-body {
+	padding-right: 10px;
 }
 
 #topRightSlot {
